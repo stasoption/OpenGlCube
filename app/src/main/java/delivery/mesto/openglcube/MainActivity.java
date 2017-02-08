@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     private GLSurfaceView glSurfaceView;
     private OpenGLRenderer mOpenGLRenderer;
 
+    private float progress_up, progress_right, progress_left;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
         height.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float prog = (float) progress / 200;
+                progress_up = (float) progress / 200;
 
-                mOpenGLRenderer.updateVertexArray(prog);
+                mOpenGLRenderer.setOffset(progress_up);
+                mOpenGLRenderer.updateVertexArray();
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -59,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
         right.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float prog = (float) progress / 200;
+                progress_right = (float) progress / 200;
 
-                mOpenGLRenderer.updateVertexArray(prog);
+                mOpenGLRenderer.setOffset(progress_right);
+                mOpenGLRenderer.updateVertexArray();
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -78,9 +82,10 @@ public class MainActivity extends AppCompatActivity {
         left.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                float prog = (float) progress / 200;
+                progress_left  = (float) progress / 200;
 
-                mOpenGLRenderer.updateVertexArray(prog);
+                mOpenGLRenderer.setOffset(progress_left);
+                mOpenGLRenderer.updateVertexArray();
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
