@@ -24,7 +24,6 @@ import static android.opengl.GLES20.glDrawArrays;
 import static android.opengl.GLES20.glEnableVertexAttribArray;
 import static android.opengl.GLES20.glGetAttribLocation;
 import static android.opengl.GLES20.glGetUniformLocation;
-import static android.opengl.GLES20.glIsBuffer;
 import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glVertexAttribPointer;
@@ -40,6 +39,30 @@ public class OpenGLRenderer implements Renderer {
     private int STATUS = 0;
     private float OFFSET = 0.0f;
 
+    private final float X_1 =  0.0f;
+    private final float Y_1 = 0.7f;
+
+    private final float X_2 =  0.5f;
+    private final float Y_2 = 0.2f;
+
+    private final float X_3 =  0.5f;
+    private final float Y_3 = -0.3f;
+
+    private final float X_4 =  0.0f;
+    private final float Y_4 = 0.2f;
+
+    private final float X_5 =  -0.5f;
+    private final float Y_5 = 0.2f;
+
+    private final float X_6 =  0.0f;
+    private final float Y_6 = -0.3f;
+
+    private final float X_7 = 0.0f;
+    private final float Y_7 = -0.8f;
+
+    private final float X_8 = -0.5f;
+    private final float Y_8 = -0.3f;
+
     private float vertex_X_1, vertex_Y_1,
                 vertex_X_2, vertex_Y_2,
                 vertex_X_3,vertex_Y_3,
@@ -48,6 +71,8 @@ public class OpenGLRenderer implements Renderer {
                 vertex_X_6,vertex_Y_6,
                 vertex_X_7,vertex_Y_7,
                 vertex_X_8,vertex_Y_8;
+
+    float[] vertices;
 
     public OpenGLRenderer(Context context) {
         this.context = context;
@@ -92,7 +117,7 @@ public class OpenGLRenderer implements Renderer {
 
     private void drawCube(){
 
-        createVertexArray(OFFSET);
+        updateVertexArray(OFFSET);
         bindData();
 
         glClear(GL_COLOR_BUFFER_BIT);
@@ -109,33 +134,7 @@ public class OpenGLRenderer implements Renderer {
 
     }
 
-
-    private final float X_1 =  0.0f;
-    private final float Y_1 = 0.7f;
-
-    private final float X_2 =  0.5f;
-    private final float Y_2 = 0.2f;
-
-    private final float X_3 =  0.5f;
-    private final float Y_3 = -0.3f;
-
-    private final float X_4 =  0.0f;
-    private final float Y_4 = 0.2f;
-
-    private final float X_5 =  -0.5f;
-    private final float Y_5 = 0.2f;
-
-    private final float X_6 =  0.0f;
-    private final float Y_6 = -0.3f;
-
-    private final float X_7 = 0.0f;
-    private final float Y_7 = -0.8f;
-
-    private final float X_8 = -0.5f;
-    private final float Y_8 = -0.3f;
-
     private void setDefaultVertex(){
-
         vertex_X_1 =  X_1;
         vertex_Y_1 = Y_1;
 
@@ -163,26 +162,38 @@ public class OpenGLRenderer implements Renderer {
 
 
 
-    private void createVertexArray(float mOffset) {
 
+    static float
+            tmp_X_1, tmp_Y_1,
+            tmp_X_2, tmp_Y_2,
+            tmp_X_3, tmp_Y_3,
+            tmp_X_4, tmp_Y_4,
+            tmp_X_5, tmp_Y_5,
+            tmp_X_6, tmp_Y_6,
+            tmp_X_7, tmp_Y_7,
+            tmp_X_8, tmp_Y_8;
+
+    private void updateVertexArray(float mOffset) {
+
+        Log.e("vertex_Y_1", String.valueOf(vertex_Y_1));
 
      if(STATUS == 1){ //Up
-            vertex_X_1 =  0.0f;
+            vertex_X_1 = 0.0f;
             vertex_Y_1 = 0.5f + mOffset;
 
-            vertex_X_2 =  0.5f;
+            vertex_X_2 = 0.5f;
             vertex_Y_2 = 0.0f + mOffset;
 
-            vertex_X_3 =  0.5f;
+            vertex_X_3 = 0.5f;
             vertex_Y_3 = -0.5f - mOffset;
 
-            vertex_X_4 =  0.0f;
+            vertex_X_4 = 0.0f;
             vertex_Y_4 = 0.0f - mOffset;
 
-            vertex_X_5 =  -0.5f;
+            vertex_X_5 = -0.5f;
             vertex_Y_5 = 0.0f + mOffset;
 
-            vertex_X_6 =  0.0f;
+            vertex_X_6 = 0.0f;
             vertex_Y_6 = -0.5f + mOffset;
 
             vertex_X_7 = 0.0f;
@@ -192,7 +203,7 @@ public class OpenGLRenderer implements Renderer {
             vertex_Y_8 = -0.5f - mOffset;
 
         }else if(STATUS == 2){ //right
-            vertex_X_1 =  0.0f - mOffset;
+            vertex_X_1 = 0.0f - mOffset;
             vertex_Y_1 = 0.5f + mOffset;
 
             vertex_X_2 =  0.5f + mOffset;
@@ -217,7 +228,6 @@ public class OpenGLRenderer implements Renderer {
             vertex_Y_8 = -0.5f + mOffset;
 
         }else if(STATUS == 3){ //left
-
             vertex_X_1 =  0.0f + mOffset;
             vertex_Y_1 = 0.5f + mOffset;
 
@@ -243,23 +253,20 @@ public class OpenGLRenderer implements Renderer {
             vertex_Y_8 = -0.5f - mOffset;
         }
 
-
-
-
-        float[] vertices = {
+        vertices = new float[]{
 //          dot1:    X          Y      dot2:   X           Y
                 // BACK RIGHT
-                vertex_X_1, vertex_Y_1,     vertex_X_2, vertex_Y_2,
-                vertex_X_3, vertex_Y_3,     vertex_X_4, vertex_Y_4,
+                vertex_X_1, vertex_Y_1, vertex_X_2, vertex_Y_2,
+                vertex_X_3, vertex_Y_3, vertex_X_4, vertex_Y_4,
                 // FRONT LEFT
-                vertex_X_5, vertex_Y_5,     vertex_X_6, vertex_Y_6,
-                vertex_X_7, vertex_Y_7,     vertex_X_8, vertex_Y_8,
+                vertex_X_5, vertex_Y_5, vertex_X_6, vertex_Y_6,
+                vertex_X_7, vertex_Y_7, vertex_X_8, vertex_Y_8,
                 //FRONT RIGHT
-                vertex_X_6, vertex_Y_6,    vertex_X_2, vertex_Y_2,
-                vertex_X_3, vertex_Y_3,    vertex_X_7, vertex_Y_7,
+                vertex_X_6, vertex_Y_6, vertex_X_2, vertex_Y_2,
+                vertex_X_3, vertex_Y_3, vertex_X_7, vertex_Y_7,
                 //BACK LEFT
-                vertex_X_5, vertex_Y_5,     vertex_X_1, vertex_Y_1,
-                vertex_X_4, vertex_Y_4,     vertex_X_8, vertex_Y_8
+                vertex_X_5, vertex_Y_5, vertex_X_1, vertex_Y_1,
+                vertex_X_4, vertex_Y_4, vertex_X_8, vertex_Y_8
         };
 
         vertexData = ByteBuffer.allocateDirect(vertices.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
