@@ -78,6 +78,7 @@ public class OpenGLRenderer implements Renderer {
         this.context = context;
 
         updateVertexes();
+        updateVertexArray(OFFSET);
     }
 
     @Override
@@ -105,10 +106,6 @@ public class OpenGLRenderer implements Renderer {
         drawCube();
     }
 
-    public void setOffset(float offset){
-        this.OFFSET = offset;
-    }
-
     public void setStatus(int status){
         this.STATUS = status;
     }
@@ -117,7 +114,6 @@ public class OpenGLRenderer implements Renderer {
 
     private void drawCube(){
 
-        updateVertexArray(OFFSET);
         bindData();
 
         glClear(GL_COLOR_BUFFER_BIT);
@@ -161,7 +157,7 @@ public class OpenGLRenderer implements Renderer {
     }
 
 
-    private void updateVertexArray(float mOffset) {
+    public void updateVertexArray(float mOffset) {
 
         if(STATUS == 1){ //Up
             X_1 = vertex_X_1;
@@ -260,110 +256,6 @@ public class OpenGLRenderer implements Renderer {
         vertexData = ByteBuffer.allocateDirect(vertices.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         vertexData.put(vertices);
     }
-
-
-
-
-
-//    private void updateVertexArray(float mOffset) {
-//
-//        Log.e("vertex_Y_1", String.valueOf(vertex_Y_1));
-//
-//     if(STATUS == 1){ //Up
-//            vertex_X_1 = 0.0f;
-//            vertex_Y_1 = 0.5f + mOffset;
-//
-//            vertex_X_2 = 0.5f;
-//            vertex_Y_2 = 0.0f + mOffset;
-//
-//            vertex_X_3 = 0.5f;
-//            vertex_Y_3 = -0.5f - mOffset;
-//
-//            vertex_X_4 = 0.0f;
-//            vertex_Y_4 = 0.0f - mOffset;
-//
-//            vertex_X_5 = -0.5f;
-//            vertex_Y_5 = 0.0f + mOffset;
-//
-//            vertex_X_6 = 0.0f;
-//            vertex_Y_6 = -0.5f + mOffset;
-//
-//            vertex_X_7 = 0.0f;
-//            vertex_Y_7 = -1.0f - mOffset;
-//
-//            vertex_X_8 = -0.5f;
-//            vertex_Y_8 = -0.5f - mOffset;
-//
-//        }else if(STATUS == 2){ //right
-//            vertex_X_1 = 0.0f - mOffset;
-//            vertex_Y_1 = 0.5f + mOffset;
-//
-//            vertex_X_2 =  0.5f + mOffset;
-//            vertex_Y_2 = 0.0f - mOffset;
-//
-//            vertex_X_3 =  0.5f+ mOffset;
-//            vertex_Y_3 = -0.5f- mOffset;
-//
-//            vertex_X_4 =  0.0f - mOffset;
-//            vertex_Y_4 = 0.0f + mOffset;
-//
-//            vertex_X_5 =  -0.5f - mOffset;
-//            vertex_Y_5 = 0.0f + mOffset;
-//
-//            vertex_X_6 =  0.0f + mOffset;
-//            vertex_Y_6 = -0.5f - mOffset;
-//
-//            vertex_X_7 = 0.0f + mOffset;
-//            vertex_Y_7 = -1.0f - mOffset;
-//
-//            vertex_X_8 = -0.5f - mOffset;
-//            vertex_Y_8 = -0.5f + mOffset;
-//
-//        }else if(STATUS == 3){ //left
-//            vertex_X_1 =  0.0f + mOffset;
-//            vertex_Y_1 = 0.5f + mOffset;
-//
-//            vertex_X_2 =  0.5f + mOffset;
-//            vertex_Y_2 = 0.0f + mOffset;
-//
-//            vertex_X_3 =  0.5f + mOffset;
-//            vertex_Y_3 = -0.5f + mOffset;
-//
-//            vertex_X_4 =  0.0f + mOffset;
-//            vertex_Y_4 = 0.0f + mOffset;
-//
-//            vertex_X_5 =  -0.5f - mOffset;
-//            vertex_Y_5 = 0.0f - mOffset;
-//
-//            vertex_X_6 =  0.0f - mOffset;
-//            vertex_Y_6 = -0.5f - mOffset;
-//
-//            vertex_X_7 = 0.0f - mOffset;
-//            vertex_Y_7 = -1.0f - mOffset;
-//
-//            vertex_X_8 = -0.5f - mOffset;
-//            vertex_Y_8 = -0.5f - mOffset;
-//        }
-//
-//        vertices = new float[]{
-////          dot1:    X          Y      dot2:   X           Y
-//                // BACK RIGHT
-//                vertex_X_1, vertex_Y_1, vertex_X_2, vertex_Y_2,
-//                vertex_X_3, vertex_Y_3, vertex_X_4, vertex_Y_4,
-//                // FRONT LEFT
-//                vertex_X_5, vertex_Y_5, vertex_X_6, vertex_Y_6,
-//                vertex_X_7, vertex_Y_7, vertex_X_8, vertex_Y_8,
-//                //FRONT RIGHT
-//                vertex_X_6, vertex_Y_6, vertex_X_2, vertex_Y_2,
-//                vertex_X_3, vertex_Y_3, vertex_X_7, vertex_Y_7,
-//                //BACK LEFT
-//                vertex_X_5, vertex_Y_5, vertex_X_1, vertex_Y_1,
-//                vertex_X_4, vertex_Y_4, vertex_X_8, vertex_Y_8
-//        };
-//
-//        vertexData = ByteBuffer.allocateDirect(vertices.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
-//        vertexData.put(vertices);
-//    }
 
 
     private void bindData() {
