@@ -51,6 +51,7 @@ public class OpenGLRenderer implements Renderer {
 
     public OpenGLRenderer(Context context) {
         this.context = context;
+        setDefaultVertex();
     }
 
     @Override
@@ -109,58 +110,63 @@ public class OpenGLRenderer implements Renderer {
     }
 
 
-    static float tmp_X_1 =  0.0f;
-    static float tmp_Y_1 = 0.7f;
+    private final float X_1 =  0.0f;
+    private final float Y_1 = 0.7f;
 
-    static float tmp_X_2 =  0.5f;
-    static float tmp_Y_2 = 0.2f;
+    private final float X_2 =  0.5f;
+    private final float Y_2 = 0.2f;
 
-    static float tmp_X_3 =  0.5f;
-    static float tmp_Y_3 = -0.3f;
+    private final float X_3 =  0.5f;
+    private final float Y_3 = -0.3f;
 
-    static float tmp_X_4 =  0.0f;
-    static float tmp_Y_4 = 0.2f;
+    private final float X_4 =  0.0f;
+    private final float Y_4 = 0.2f;
 
-    static float tmp_X_5 =  -0.5f;
-    static float tmp_Y_5 = 0.2f;
+    private final float X_5 =  -0.5f;
+    private final float Y_5 = 0.2f;
 
-    static float tmp_X_6 =  0.0f;
-    static float tmp_Y_6 = -0.3f;
+    private final float X_6 =  0.0f;
+    private final float Y_6 = -0.3f;
 
-    static float tmp_X_7 = 0.0f;
-    static float tmp_Y_7 = -0.8f;
+    private final float X_7 = 0.0f;
+    private final float Y_7 = -0.8f;
 
-    static float tmp_X_8 = -0.5f;
-    static float tmp_Y_8 = -0.3f;
+    private final float X_8 = -0.5f;
+    private final float Y_8 = -0.3f;
+
+    private void setDefaultVertex(){
+
+        vertex_X_1 =  X_1;
+        vertex_Y_1 = Y_1;
+
+        vertex_X_2 =  X_2;
+        vertex_Y_2 = Y_2;
+
+        vertex_X_3 =  X_3;
+        vertex_Y_3 = Y_3;
+
+        vertex_X_4 =  X_4;
+        vertex_Y_4 = Y_4;
+
+        vertex_X_5 =  X_5;
+        vertex_Y_5 = Y_5;
+
+        vertex_X_6 =  X_6;
+        vertex_Y_6 = Y_6;
+
+        vertex_X_7 = X_7;
+        vertex_Y_7 = Y_7;
+
+        vertex_X_8 = X_8;
+        vertex_Y_8 = Y_8;
+    }
+
+
 
     private void createVertexArray(float mOffset) {
 
-        if(STATUS == 0){ // default
-            vertex_X_1 =  0.0f;
-            vertex_Y_1 = 0.5f;
 
-            vertex_X_2 =  0.5f;
-            vertex_Y_2 = 0.0f;
-
-            vertex_X_3 =  0.5f;
-            vertex_Y_3 = -0.5f;
-
-            vertex_X_4 =  0.0f;
-            vertex_Y_4 = 0.0f;
-
-            vertex_X_5 =  -0.5f;
-            vertex_Y_5 = 0.0f;
-
-            vertex_X_6 =  0.0f;
-            vertex_Y_6 = -0.5f;
-
-            vertex_X_7 = 0.0f;
-            vertex_Y_7 = -1.0f;
-
-            vertex_X_8 = -0.5f;
-            vertex_Y_8 = -0.5f;
-
-        }else if(STATUS == 1){ //Up
+     if(STATUS == 1){ //Up
             vertex_X_1 =  0.0f;
             vertex_Y_1 = 0.5f + mOffset;
 
