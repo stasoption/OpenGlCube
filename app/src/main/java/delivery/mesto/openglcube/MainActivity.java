@@ -41,11 +41,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float prog = (float) progress / 200;
-                mOpenGLRenderer.setStatus(1);
+
                 mOpenGLRenderer.setOffset(prog);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                mOpenGLRenderer.setStatus(1);
                 mOpenGLRenderer.updateVertexes();
             }
 
@@ -59,11 +60,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float prog = (float) progress / 200;
-                mOpenGLRenderer.setStatus(2);
+
                 mOpenGLRenderer.setOffset(prog);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                mOpenGLRenderer.setStatus(2);
                 mOpenGLRenderer.updateVertexes();
             }
 
@@ -77,11 +79,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float prog = (float) progress / 200;
-                mOpenGLRenderer.setStatus(3);
+
                 mOpenGLRenderer.setOffset(prog);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                mOpenGLRenderer.setStatus(3);
                 mOpenGLRenderer.updateVertexes();
             }
 

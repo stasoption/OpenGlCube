@@ -3,6 +3,7 @@ package delivery.mesto.openglcube;
 import android.content.Context;
 import android.graphics.Color;
 import android.opengl.GLSurfaceView.Renderer;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -158,18 +159,6 @@ public class OpenGLRenderer implements Renderer {
         vertex_X_8 = X_8;
         vertex_Y_8 = Y_8;
     }
-
-
-//    static float
-//            tmp_X_1, tmp_Y_1,
-//            tmp_X_2, tmp_Y_2,
-//            tmp_X_3, tmp_Y_3,
-//            tmp_X_4, tmp_Y_4,
-//            tmp_X_5, tmp_Y_5,
-//            tmp_X_6, tmp_Y_6,
-//            tmp_X_7, tmp_Y_7,
-//            tmp_X_8, tmp_Y_8;
-
 
 
     private void updateVertexArray(float mOffset) {
