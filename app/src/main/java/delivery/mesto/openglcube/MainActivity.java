@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                mOpenGLRenderer.updateVertexes();
             }
 
             @Override
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                mOpenGLRenderer.updateVertexes();
             }
 
             @Override
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+                mOpenGLRenderer.updateVertexes();
             }
 
             @Override

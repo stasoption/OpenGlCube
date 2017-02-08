@@ -3,7 +3,6 @@ package delivery.mesto.openglcube;
 import android.content.Context;
 import android.graphics.Color;
 import android.opengl.GLSurfaceView.Renderer;
-import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -77,7 +76,7 @@ public class OpenGLRenderer implements Renderer {
     public OpenGLRenderer(Context context) {
         this.context = context;
 
-        setDefaultVertex();
+        updateVertexes();
     }
 
     @Override
@@ -107,7 +106,6 @@ public class OpenGLRenderer implements Renderer {
 
     public void setOffset(float offset){
         this.OFFSET = offset;
-        setDefaultVertex();
     }
 
     public void setStatus(int status){
@@ -135,7 +133,7 @@ public class OpenGLRenderer implements Renderer {
 
     }
 
-    private void setDefaultVertex(){
+    public void updateVertexes(){
         vertex_X_1 =  X_1;
         vertex_Y_1 = Y_1;
 
