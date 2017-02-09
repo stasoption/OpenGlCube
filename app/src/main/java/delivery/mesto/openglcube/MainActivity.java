@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_up = (float) progress / 200;
 
-                mOpenGLRenderer.setOffset(progress_up);
+                mOpenGLRenderer.setOffsetUp(progress_up);
                 mOpenGLRenderer.updateVertexArray();
             }
             @Override
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_right = (float) progress / 200;
 
-                mOpenGLRenderer.setOffset(progress_right);
+                mOpenGLRenderer.setOffsetRight(progress_right);
                 mOpenGLRenderer.updateVertexArray();
             }
             @Override
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress_left  = (float) progress / 200;
 
-                mOpenGLRenderer.setOffset(progress_left);
+                mOpenGLRenderer.setOffsetLeft(progress_left);
                 mOpenGLRenderer.updateVertexArray();
             }
             @Override

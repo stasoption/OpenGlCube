@@ -37,7 +37,9 @@ public class OpenGLRenderer implements Renderer {
     private int aPositionLocation;
 
     private int STATUS = 0;
-    private float OFFSET = 0.0f;
+    private float OFFSET_UP = 0.0f;
+    private float OFFSET_RIGHT = 0.0f;
+    private float OFFSET_LEFT = 0.0f;
 
     private float X_1;
     private float Y_1;
@@ -112,8 +114,16 @@ public class OpenGLRenderer implements Renderer {
         this.STATUS = status;
     }
 
-    public void setOffset(float offset){
-        this.OFFSET = offset;
+    public void setOffsetUp(float offset){
+        this.OFFSET_UP = offset;
+    }
+
+    public void setOffsetRight(float offset){
+        this.OFFSET_RIGHT = offset;
+    }
+
+    public void setOffsetLeft(float offset){
+        this.OFFSET_LEFT = offset;
     }
 
 
@@ -164,29 +174,81 @@ public class OpenGLRenderer implements Renderer {
 
     public void updateVertexes(){
 
-        vertex_X_1 =  X_1;
-        vertex_Y_1 = Y_1;
+        if(STATUS==1){
+            vertex_X_1 =  X_1;
+            vertex_Y_1 = Y_1 - OFFSET_UP;
 
-        vertex_X_2 =  X_2;
-        vertex_Y_2 = Y_2;
+            vertex_X_2 =  X_2;
+            vertex_Y_2 = Y_2 - OFFSET_UP;
 
-        vertex_X_3 =  X_3;
-        vertex_Y_3 = Y_3;
+            vertex_X_3 =  X_3;
+            vertex_Y_3 = Y_3 + OFFSET_UP;
 
-        vertex_X_4 =  X_4;
-        vertex_Y_4 = Y_4;
+            vertex_X_4 =  X_4;
+            vertex_Y_4 = Y_4 + OFFSET_UP;
 
-        vertex_X_5 =  X_5;
-        vertex_Y_5 = Y_5;
+            vertex_X_5 =  X_5;
+            vertex_Y_5 = Y_5 - OFFSET_UP;
 
-        vertex_X_6 =  X_6;
-        vertex_Y_6 = Y_6;
+            vertex_X_6 =  X_6;
+            vertex_Y_6 = Y_6 - OFFSET_UP;
 
-        vertex_X_7 = X_7;
-        vertex_Y_7 = Y_7;
+            vertex_X_7 = X_7;
+            vertex_Y_7 = Y_7 + OFFSET_UP;
 
-        vertex_X_8 = X_8;
-        vertex_Y_8 = Y_8;
+            vertex_X_8 = X_8;
+            vertex_Y_8 = Y_8 + OFFSET_UP;
+        }else if(STATUS==2){
+
+            vertex_X_1 =  X_1 + OFFSET_RIGHT;
+            vertex_Y_1 = Y_1 - OFFSET_RIGHT;
+
+            vertex_X_2 =  X_2 - OFFSET_RIGHT;
+            vertex_Y_2 = Y_2 + OFFSET_RIGHT;
+
+            vertex_X_3 =  X_3 - OFFSET_RIGHT;
+            vertex_Y_3 = Y_3 + OFFSET_RIGHT;
+
+            vertex_X_4 =  X_4 + OFFSET_RIGHT;
+            vertex_Y_4 = Y_4 - OFFSET_RIGHT;
+
+            vertex_X_5 =  X_5 + OFFSET_RIGHT;
+            vertex_Y_5 = Y_5 - OFFSET_RIGHT;
+
+            vertex_X_6 =  X_6 - OFFSET_RIGHT;
+            vertex_Y_6 = Y_6 + OFFSET_RIGHT;
+
+            vertex_X_7 = X_7 - OFFSET_RIGHT;
+            vertex_Y_7 = Y_7 + OFFSET_RIGHT;
+
+            vertex_X_8 = X_8 + OFFSET_RIGHT;
+            vertex_Y_8 = Y_8 - OFFSET_RIGHT;
+        }else if(STATUS == 3){
+
+            vertex_X_1 =  X_1 - OFFSET_LEFT;
+            vertex_Y_1 = Y_1 - OFFSET_LEFT;
+
+            vertex_X_2 =  X_2 - OFFSET_LEFT;
+            vertex_Y_2 = Y_2 - OFFSET_LEFT;
+
+            vertex_X_3 =  X_3 - OFFSET_LEFT;
+            vertex_Y_3 = Y_3 - OFFSET_LEFT;
+
+            vertex_X_4 =  X_4 - OFFSET_LEFT;
+            vertex_Y_4 = Y_4 - OFFSET_LEFT;
+
+            vertex_X_5 =  X_5 + OFFSET_LEFT;
+            vertex_Y_5 = Y_5 + OFFSET_LEFT;
+
+            vertex_X_6 =  X_6 + OFFSET_LEFT;
+            vertex_Y_6 = Y_6 + OFFSET_LEFT;
+
+            vertex_X_7 = X_7 + OFFSET_LEFT;
+            vertex_Y_7 = Y_7 + OFFSET_LEFT;
+
+            vertex_X_8 = X_8 + OFFSET_LEFT;
+            vertex_Y_8 = Y_8 + OFFSET_LEFT;
+        }
     }
 
 
@@ -194,102 +256,96 @@ public class OpenGLRenderer implements Renderer {
 
         if(STATUS == 1){ //Up
             X_1 = vertex_X_1;
-            Y_1 = vertex_Y_1 + OFFSET;
-
-            Log.e("1", String.valueOf(Y_1));
+            Y_1 = vertex_Y_1 + OFFSET_UP;
 
             X_2 =  vertex_X_2;
-            Y_2 = vertex_Y_2 + OFFSET;
+            Y_2 = vertex_Y_2 + OFFSET_UP;
 
             X_3 =  vertex_X_3;
-            Y_3 = vertex_Y_3 - OFFSET;
+            Y_3 = vertex_Y_3 - OFFSET_UP;
 
             X_4 =  vertex_X_4;
-            Y_4 = vertex_Y_4 - OFFSET;
+            Y_4 = vertex_Y_4 - OFFSET_UP;
 
             X_5 =  vertex_X_5;
-            Y_5 = vertex_Y_5 + OFFSET;
+            Y_5 = vertex_Y_5 + OFFSET_UP;
 
             X_6 = vertex_X_6;
-            Y_6 = vertex_Y_6 + OFFSET;
+            Y_6 = vertex_Y_6 + OFFSET_UP;
 
             X_7 = vertex_X_7;
-            Y_7 = vertex_Y_7 - OFFSET;
+            Y_7 = vertex_Y_7 - OFFSET_UP;
 
             X_8 = vertex_X_8;
-            Y_8 = vertex_Y_8 - OFFSET;
+            Y_8 = vertex_Y_8 - OFFSET_UP;
 
         }else if(STATUS == 2){ //right
 
-            X_1 = vertex_X_1 - OFFSET;
-            Y_1 = vertex_Y_1 + OFFSET;
+            X_1 = vertex_X_1 - OFFSET_RIGHT;
+            Y_1 = vertex_Y_1 + OFFSET_RIGHT;
 
-            Log.e("2", String.valueOf(Y_1));
+            X_2 =  vertex_X_2 + OFFSET_RIGHT;
+            Y_2 = vertex_Y_2 - OFFSET_RIGHT;
 
-            X_2 =  vertex_X_2 + OFFSET;
-            Y_2 = vertex_Y_2 - OFFSET;
+            X_3 =  vertex_X_3+ OFFSET_RIGHT;
+            Y_3 = vertex_Y_3- OFFSET_RIGHT;
 
-            X_3 =  vertex_X_3+ OFFSET;
-            Y_3 = vertex_Y_3- OFFSET;
+            X_4 =  vertex_X_4 - OFFSET_RIGHT;
+            Y_4 = vertex_Y_4 + OFFSET_RIGHT;
 
-            X_4 =  vertex_X_4 - OFFSET;
-            Y_4 = vertex_Y_4 + OFFSET;
+            X_5 =  vertex_X_5 - OFFSET_RIGHT;
+            Y_5 = vertex_Y_5 + OFFSET_RIGHT;
 
-            X_5 =  vertex_X_5 - OFFSET;
-            Y_5 = vertex_Y_5 + OFFSET;
+            X_6 = vertex_X_6 + OFFSET_RIGHT;
+            Y_6 = vertex_Y_6 - OFFSET_RIGHT;
 
-            X_6 = vertex_X_6 + OFFSET;
-            Y_6 = vertex_Y_6 - OFFSET;
+            X_7 = vertex_X_7 + OFFSET_RIGHT;
+            Y_7 = vertex_Y_7 - OFFSET_RIGHT;
 
-            X_7 = vertex_X_7 + OFFSET;
-            Y_7 = vertex_Y_7 - OFFSET;
-
-            X_8 = vertex_X_8 - OFFSET;
-            Y_8 = vertex_Y_8 + OFFSET;
+            X_8 = vertex_X_8 - OFFSET_RIGHT;
+            Y_8 = vertex_Y_8 + OFFSET_RIGHT;
 
         }else if(STATUS == 3){ //left
 
-            X_1 =  vertex_X_1 + OFFSET;
-            Y_1 = vertex_Y_1 + OFFSET;
+            X_1 =  vertex_X_1 + OFFSET_LEFT;
+            Y_1 = vertex_Y_1 + OFFSET_LEFT;
 
-            Log.e("3", String.valueOf(Y_1));
+            X_2 =  vertex_X_2 + OFFSET_LEFT;
+            Y_2 = vertex_Y_2 + OFFSET_LEFT;
 
-            X_2 =  vertex_X_2 + OFFSET;
-            Y_2 = vertex_Y_2 + OFFSET;
+            X_3 =  vertex_X_3 + OFFSET_LEFT;
+            Y_3 = vertex_Y_3 + OFFSET_LEFT;
 
-            X_3 =  vertex_X_3 + OFFSET;
-            Y_3 = vertex_Y_3 + OFFSET;
+            X_4 =  vertex_X_4 + OFFSET_LEFT;
+            Y_4 = vertex_Y_4 + OFFSET_LEFT;
 
-            X_4 =  vertex_X_4 + OFFSET;
-            Y_4 = vertex_Y_4 + OFFSET;
+            X_5 =  vertex_X_5 - OFFSET_LEFT;
+            Y_5 = vertex_Y_5 - OFFSET_LEFT;
 
-            X_5 =  vertex_X_5 - OFFSET;
-            Y_5 = vertex_Y_5 - OFFSET;
+            X_6 =  vertex_X_6 - OFFSET_LEFT;
+            Y_6 = vertex_Y_6 - OFFSET_LEFT;
 
-            X_6 =  vertex_X_6 - OFFSET;
-            Y_6 = vertex_Y_6 - OFFSET;
+            X_7 = vertex_X_7 - OFFSET_LEFT;
+            Y_7 = vertex_Y_7 - OFFSET_LEFT;
 
-            X_7 = vertex_X_7 - OFFSET;
-            Y_7 = vertex_Y_7 - OFFSET;
-
-            X_8 = vertex_X_8 - OFFSET;
-            Y_8 = vertex_Y_8 - OFFSET;
+            X_8 = vertex_X_8 - OFFSET_LEFT;
+            Y_8 = vertex_Y_8 - OFFSET_LEFT;
         }
 
         float[] mVertices = new float[]{
-//          dot1:    X          Y      dot2:   X           Y
+//         dot1: X   Y    dot2:  X    Y
                 // BACK RIGHT
-                X_1, Y_1, X_2, Y_2,
-                X_3, Y_3, X_4, Y_4,
+                X_1, Y_1,       X_2, Y_2,
+                X_3, Y_3,       X_4, Y_4,
                 // FRONT LEFT
-                X_5, Y_5, X_6, Y_6,
-                X_7, Y_7, X_8, Y_8,
+                X_5, Y_5,       X_6, Y_6,
+                X_7, Y_7,       X_8, Y_8,
                 //FRONT RIGHT
-                X_6, Y_6, X_2, Y_2,
-                X_3, Y_3, X_7, Y_7,
+                X_6, Y_6,       X_2, Y_2,
+                X_3, Y_3,       X_7, Y_7,
                 //BACK LEFT
-                X_5, Y_5, X_1, Y_1,
-                X_4, Y_4, X_8, Y_8
+                X_5, Y_5,       X_1, Y_1,
+                X_4, Y_4,       X_8, Y_8
         };
 
         vertexData = ByteBuffer.allocateDirect(mVertices.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
