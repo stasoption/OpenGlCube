@@ -14,14 +14,15 @@
         android:orientation="horizontal"
         android:id="@+id/renderer"
         android:layout_width="match_parent"
-        android:layout_height="300dp" >
+        android:layout_height="300dp"
+        android:background="#7846c2">
     </LinearLayout>
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Высота"
+        android:text="height"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/activity_horizontal_margin"/>
     <SeekBar
@@ -33,7 +34,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Длина"
+        android:text="length"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
@@ -46,7 +47,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ширина"
+        android:text="width"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 

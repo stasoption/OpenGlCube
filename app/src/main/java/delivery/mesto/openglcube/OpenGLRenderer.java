@@ -2,11 +2,15 @@ package delivery.mesto.openglcube;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
+import android.opengl.Matrix;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -27,6 +31,7 @@ import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glVertexAttribPointer;
 import static android.opengl.GLES20.glViewport;
+import static android.opengl.GLES20.glUniformMatrix4fv;
 
 public class OpenGLRenderer implements Renderer {
     private Context context;
@@ -52,12 +57,16 @@ public class OpenGLRenderer implements Renderer {
     private float vertex_X_1, vertex_X_2, vertex_X_3, vertex_X_4, vertex_X_5, vertex_X_6, vertex_X_7, vertex_X_8;
     private float vertex_Y_1, vertex_Y_2, vertex_Y_3, vertex_Y_4, vertex_Y_5, vertex_Y_6, vertex_Y_7, vertex_Y_8;
 
+    private int uMatrixLocation;
+    private float[] mProjectionMatrix = new float[16];
+    private float[] mViewMatrix = new float[16];
+    private float[] mMatrix = new float[16];
+
+
+
 
     public OpenGLRenderer(Context context) {
         this.context = context;
-        initVertexes();
-        updateVertexes();
-        updateVertexArray();
     }
 
     // statuses for the cube when changing (up, right, left)
@@ -80,32 +89,92 @@ public class OpenGLRenderer implements Renderer {
     public void onSurfaceCreated(GL10 arg0, EGLConfig arg1) {
         //background foe the canvas
         int intColor = Color.parseColor("#7846c2");
-        glClearColor(Color.red(intColor) / 255.0f,
+        GLES20.glClearColor(Color.red(intColor) / 255.0f,
                 Color.green(intColor) / 255.0f,
                 Color.blue(intColor) / 255.0f,
                 1f);
+
+
         //set parameters for shaders
         int vertexShaderId = ShaderUtils.createShader(context, GL_VERTEX_SHADER, R.raw.vertex_shader);
         int fragmentShaderId = ShaderUtils.createShader(context, GL_FRAGMENT_SHADER, R.raw.fragment_shader);
         programId = ShaderUtils.createProgram(vertexShaderId, fragmentShaderId);
         glUseProgram(programId);
+
+        createViewMatrix();
+
+        initVertexes();
+        updateVertexes();
+        updateVertexArray();
+
+        bindData();
+
     }
 
     @Override
     public void onSurfaceChanged(GL10 arg0, int width, int height) {
-        glViewport(0, 0, width, height);
+        GLES20.glViewport(0, 0, width, height);
+
+        createProjectionMatrix(width, height);
+        bindMatrix();
     }
 
     @Override
     public void onDrawFrame(GL10 arg0) {
+//        glClear(GL_COLOR_BUFFER_BIT);
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+        bindData();
         drawCube();
     }
 
+    private void createProjectionMatrix(int width, int height) {
+        float ratio = 1;
+        float left = -1;
+        float right = 1;
+        float bottom = -1;
+        float top = 1;
+        float near = 2;
+        float far = 8;
+        if (width > height) {
+            ratio = (float) width / height;
+            left *= ratio;
+            right *= ratio;
+        } else {
+            ratio = (float) height / width;
+            bottom *= ratio;
+            top *= ratio;
+        }
+
+        Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
+    }
+
+    private void createViewMatrix() {
+        // точка положения камеры
+        float eyeX = 0;
+        float eyeY = 0;
+        float eyeZ = 2.5f;
+
+        // точка направления камеры
+        float centerX = 0;
+        float centerY = 0;
+        float centerZ = 0;
+
+        // up-вектор
+        float upX = 0;
+        float upY = 1;
+        float upZ = 0;
+
+        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+    }
+
+    private void bindMatrix() {
+        Matrix.multiplyMM(mMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+        glUniformMatrix4fv(uMatrixLocation, 1, false, mMatrix, 0);
+    }
 
 
+    //method drawing the cube
     private void drawCube(){
-        bindData();
-        glClear(GL_COLOR_BUFFER_BIT);
         glLineWidth(10);
         // BACK RIGHT
         glDrawArrays(GL_LINE_LOOP, 0, 4);
@@ -331,7 +400,6 @@ public class OpenGLRenderer implements Renderer {
     private void bindData() {
         uColorLocation = glGetUniformLocation(programId, "u_Color");
         int intColor = Color.parseColor("#ffffff");
-
         glUniform4f(uColorLocation,
                 Color.red(intColor) / 255.0f,
                 Color.green(intColor) / 255.0f,
@@ -342,6 +410,9 @@ public class OpenGLRenderer implements Renderer {
         vertexData.position(0);
         glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0, vertexData);
         glEnableVertexAttribArray(aPositionLocation);
+
+        // матрица
+        uMatrixLocation = glGetUniformLocation(programId, "u_Matrix");
     }
 }
 

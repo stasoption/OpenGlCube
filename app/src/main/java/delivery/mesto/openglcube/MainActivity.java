@@ -3,7 +3,10 @@ package delivery.mesto.openglcube;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
     private float progress_up, progress_right, progress_left;
 
+    private boolean rendererSet = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,78 +34,89 @@ public class MainActivity extends AppCompatActivity {
 
         mOpenGLRenderer = new OpenGLRenderer(MainActivity.this);
 
+
+
         if (!supportES2()) {
             Toast.makeText(this, "OpenGl ES 2.0 is not supported", Toast.LENGTH_LONG).show();
-            finish();
-            return;
+        }else {
+
+            rendererSet = true;
+
+            glSurfaceView = new GLSurfaceView(this);
+            glSurfaceView.setEGLContextClientVersion(2);
+
+//            glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+//            glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+//            glSurfaceView.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.background_cube, null));
+
+            glSurfaceView.setRenderer(mOpenGLRenderer);
+
+
+
+
+            LinearLayout renderer = (LinearLayout) findViewById(R.id.renderer);
+            renderer.addView(glSurfaceView);
+
+            SeekBar height = (SeekBar)findViewById(R.id.height);
+            height.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    progress_up = (float) progress / 200;
+
+                    mOpenGLRenderer.setOffsetUp(progress_up);
+                    mOpenGLRenderer.updateVertexArray();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    mOpenGLRenderer.setStatus(STATUS_UP);
+                    mOpenGLRenderer.updateVertexes();
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+
+            SeekBar right = (SeekBar)findViewById(R.id.right);
+            right.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    progress_right = (float) progress / 200;
+
+                    mOpenGLRenderer.setOffsetRight(progress_right);
+                    mOpenGLRenderer.updateVertexArray();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    mOpenGLRenderer.setStatus(STATUS_RIGHT);
+                    mOpenGLRenderer.updateVertexes();
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+
+            SeekBar left = (SeekBar)findViewById(R.id.left);
+            left.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    progress_left  = (float) progress / 200;
+
+                    mOpenGLRenderer.setOffsetLeft(progress_left);
+                    mOpenGLRenderer.updateVertexArray();
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    mOpenGLRenderer.setStatus(STATUS_LEFT);
+                    mOpenGLRenderer.updateVertexes();
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
         }
-        glSurfaceView = new GLSurfaceView(this);
-        glSurfaceView.setEGLContextClientVersion(2);
-        glSurfaceView.setRenderer(mOpenGLRenderer);
-
-
-        LinearLayout renderer = (LinearLayout) findViewById(R.id.renderer);
-        renderer.addView(glSurfaceView);
-
-        SeekBar height = (SeekBar)findViewById(R.id.height);
-        height.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress_up = (float) progress / 200;
-
-                mOpenGLRenderer.setOffsetUp(progress_up);
-                mOpenGLRenderer.updateVertexArray();
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mOpenGLRenderer.setStatus(STATUS_UP);
-                mOpenGLRenderer.updateVertexes();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        SeekBar right = (SeekBar)findViewById(R.id.right);
-        right.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress_right = (float) progress / 200;
-
-                mOpenGLRenderer.setOffsetRight(progress_right);
-                mOpenGLRenderer.updateVertexArray();
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mOpenGLRenderer.setStatus(STATUS_RIGHT);
-                mOpenGLRenderer.updateVertexes();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        SeekBar left = (SeekBar)findViewById(R.id.left);
-        left.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progress_left  = (float) progress / 200;
-
-                mOpenGLRenderer.setOffsetLeft(progress_left);
-                mOpenGLRenderer.updateVertexArray();
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mOpenGLRenderer.setStatus(STATUS_LEFT);
-                mOpenGLRenderer.updateVertexes();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
 
 
     }
@@ -108,13 +124,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        glSurfaceView.onPause();
+        if (rendererSet) {
+            glSurfaceView.onPause();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        glSurfaceView.onResume();
+        if (rendererSet) {
+            glSurfaceView.onResume();
+        }
     }
 
     private boolean supportES2() {
@@ -123,7 +143,5 @@ public class MainActivity extends AppCompatActivity {
         ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
         return (configurationInfo.reqGlEsVersion >= 0x20000);
     }
-
-
 
 }
