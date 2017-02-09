@@ -189,7 +189,7 @@ public class OpenGLRenderer implements Renderer {
     //primary initialized the cube
     public void initVertexes(){
         X_1 =  0.0f;
-        Y_1 = 0.7f;
+        Y_1 = 0.5f;
 
         X_2 =  0.5f;
         Y_2 = 0.2f;
@@ -198,16 +198,16 @@ public class OpenGLRenderer implements Renderer {
         Y_3 = -0.3f;
 
         X_4 =  0.0f;
-        Y_4 = 0.2f;
+        Y_4 = 0.0f;
 
         X_5 =  -0.5f;
         Y_5 = 0.2f;
 
         X_6 =  0.0f;
-        Y_6 = -0.3f;
+        Y_6 = -0.1f;
 
         X_7 = 0.0f;
-        Y_7 = -0.8f;
+        Y_7 = -0.6f;
 
         X_8 = -0.5f;
         Y_8 = -0.3f;
