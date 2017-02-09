@@ -121,7 +121,6 @@ public class OpenGLRenderer implements Renderer {
 
     @Override
     public void onDrawFrame(GL10 arg0) {
-//        glClear(GL_COLOR_BUFFER_BIT);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         bindData();
         drawCube();
@@ -144,26 +143,27 @@ public class OpenGLRenderer implements Renderer {
             bottom *= ratio;
             top *= ratio;
         }
-
         Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
     }
 
+
     private void createViewMatrix() {
-        // точка положения камеры
-        float eyeX = 0;
-        float eyeY = 0;
+        // Position the eye behind the origin.
+        float eyeX = 0.0f;
+        float eyeY = 0.0f;
         float eyeZ = 2.5f;
 
-        // точка направления камеры
-        float centerX = 0;
-        float centerY = 0;
-        float centerZ = 0;
+        // We are looking toward the distance
+        float centerX = 0.0f;
+        float centerY = 0.0f;
+        float centerZ = -5.0f;
 
-        // up-вектор
-        float upX = 0;
-        float upY = 1;
-        float upZ = 0;
+        // Set our up vector. This is where our head would be pointing were we holding the camera.
+        float upX = 0.0f;
+        float upY = 1.0f;
+        float upZ = 0.0f;
 
+        // view matrix. In OpenGL 2, we can keep track of these matrices separately if we choose.
         Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
     }
 
