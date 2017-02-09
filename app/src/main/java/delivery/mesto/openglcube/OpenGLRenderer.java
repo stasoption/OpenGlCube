@@ -3,7 +3,6 @@ package delivery.mesto.openglcube;
 import android.content.Context;
 import android.graphics.Color;
 import android.opengl.GLSurfaceView.Renderer;
-import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -36,63 +35,56 @@ public class OpenGLRenderer implements Renderer {
     private int uColorLocation;
     private int aPositionLocation;
 
+    public final static int STATUS_UP = 1;
+    public final static int STATUS_RIGHT = 2;
+    public final static int STATUS_LEFT = 3;
+
     private int STATUS = 0;
     private float OFFSET_UP = 0.0f;
     private float OFFSET_RIGHT = 0.0f;
     private float OFFSET_LEFT = 0.0f;
 
-    private float X_1;
-    private float Y_1;
+    //for storing coordinates
+    private float X_1, X_2, X_3, X_4, X_5, X_6, X_7, X_8;
+    private float Y_1, Y_2, Y_3, Y_4, Y_5, Y_6, Y_7, Y_8;
 
-    private float X_2;
-    private float Y_2;
+    //vertices when drawing
+    private float vertex_X_1, vertex_X_2, vertex_X_3, vertex_X_4, vertex_X_5, vertex_X_6, vertex_X_7, vertex_X_8;
+    private float vertex_Y_1, vertex_Y_2, vertex_Y_3, vertex_Y_4, vertex_Y_5, vertex_Y_6, vertex_Y_7, vertex_Y_8;
 
-    private float X_3;
-    private float Y_3;
-
-    private float X_4;
-    private float Y_4;
-
-    private float X_5;
-    private float Y_5;
-
-    private float X_6;
-    private float Y_6;
-
-    private float X_7;
-    private float Y_7;
-
-    private float X_8;
-    private float Y_8;
-
-
-
-    private float vertex_X_1, vertex_Y_1,
-                vertex_X_2, vertex_Y_2,
-                vertex_X_3,vertex_Y_3,
-                vertex_X_4,vertex_Y_4,
-                vertex_X_5,vertex_Y_5,
-                vertex_X_6,vertex_Y_6,
-                vertex_X_7,vertex_Y_7,
-                vertex_X_8,vertex_Y_8;
 
     public OpenGLRenderer(Context context) {
         this.context = context;
-
         initVertexes();
         updateVertexes();
         updateVertexArray();
     }
 
+    // statuses for the cube when changing (up, right, left)
+    public void setStatus(int status){
+        this.STATUS = status;
+    }
+
+    // how many offset for the cube when it changing
+    public void setOffsetUp(float offset){
+        this.OFFSET_UP = offset;
+    }
+    public void setOffsetRight(float offset){
+        this.OFFSET_RIGHT = offset;
+    }
+    public void setOffsetLeft(float offset){
+        this.OFFSET_LEFT = offset;
+    }
 
     @Override
     public void onSurfaceCreated(GL10 arg0, EGLConfig arg1) {
+        //background foe the canvas
         int intColor = Color.parseColor("#7846c2");
         glClearColor(Color.red(intColor) / 255.0f,
                 Color.green(intColor) / 255.0f,
                 Color.blue(intColor) / 255.0f,
                 1f);
-
+        //set parameters for shaders
         int vertexShaderId = ShaderUtils.createShader(context, GL_VERTEX_SHADER, R.raw.vertex_shader);
         int fragmentShaderId = ShaderUtils.createShader(context, GL_FRAGMENT_SHADER, R.raw.fragment_shader);
         programId = ShaderUtils.createProgram(vertexShaderId, fragmentShaderId);
@@ -104,37 +96,17 @@ public class OpenGLRenderer implements Renderer {
         glViewport(0, 0, width, height);
     }
 
-//    private float offset = 0.0f;
     @Override
     public void onDrawFrame(GL10 arg0) {
         drawCube();
     }
 
-    public void setStatus(int status){
-        this.STATUS = status;
-    }
-
-    public void setOffsetUp(float offset){
-        this.OFFSET_UP = offset;
-    }
-
-    public void setOffsetRight(float offset){
-        this.OFFSET_RIGHT = offset;
-    }
-
-    public void setOffsetLeft(float offset){
-        this.OFFSET_LEFT = offset;
-    }
-
 
 
     private void drawCube(){
-
         bindData();
-
         glClear(GL_COLOR_BUFFER_BIT);
         glLineWidth(10);
-
         // BACK RIGHT
         glDrawArrays(GL_LINE_LOOP, 0, 4);
         // FRONT LEFT
@@ -143,9 +115,9 @@ public class OpenGLRenderer implements Renderer {
         glDrawArrays(GL_LINE_LOOP, 8, 4);
         //BACK LEFT
         glDrawArrays(GL_LINE_LOOP, 12, 4);
-
     }
 
+    //primary initialized the cube
     public void initVertexes(){
         X_1 =  0.0f;
         Y_1 = 0.7f;
@@ -172,9 +144,10 @@ public class OpenGLRenderer implements Renderer {
         Y_8 = -0.3f;
     }
 
+    //update the cube after transformation
     public void updateVertexes(){
 
-        if(STATUS==1){
+        if(STATUS == STATUS_UP){
             vertex_X_1 =  X_1;
             vertex_Y_1 = Y_1 - OFFSET_UP;
 
@@ -198,7 +171,7 @@ public class OpenGLRenderer implements Renderer {
 
             vertex_X_8 = X_8;
             vertex_Y_8 = Y_8 + OFFSET_UP;
-        }else if(STATUS==2){
+        }else if(STATUS == STATUS_RIGHT){
 
             vertex_X_1 =  X_1 + OFFSET_RIGHT;
             vertex_Y_1 = Y_1 - OFFSET_RIGHT;
@@ -223,7 +196,7 @@ public class OpenGLRenderer implements Renderer {
 
             vertex_X_8 = X_8 + OFFSET_RIGHT;
             vertex_Y_8 = Y_8 - OFFSET_RIGHT;
-        }else if(STATUS == 3){
+        }else if(STATUS == STATUS_LEFT){
 
             vertex_X_1 =  X_1 - OFFSET_LEFT;
             vertex_Y_1 = Y_1 - OFFSET_LEFT;
@@ -252,9 +225,10 @@ public class OpenGLRenderer implements Renderer {
     }
 
 
-    public void updateVertexArray() {
 
-        if(STATUS == 1){ //Up
+    // transformation the cube when drawingtransformation
+    public void updateVertexArray() {
+        if(STATUS == STATUS_UP){ //Up
             X_1 = vertex_X_1;
             Y_1 = vertex_Y_1 + OFFSET_UP;
 
@@ -279,7 +253,7 @@ public class OpenGLRenderer implements Renderer {
             X_8 = vertex_X_8;
             Y_8 = vertex_Y_8 - OFFSET_UP;
 
-        }else if(STATUS == 2){ //right
+        }else if(STATUS == STATUS_RIGHT){ //right
 
             X_1 = vertex_X_1 - OFFSET_RIGHT;
             Y_1 = vertex_Y_1 + OFFSET_RIGHT;
@@ -305,7 +279,7 @@ public class OpenGLRenderer implements Renderer {
             X_8 = vertex_X_8 - OFFSET_RIGHT;
             Y_8 = vertex_Y_8 + OFFSET_RIGHT;
 
-        }else if(STATUS == 3){ //left
+        }else if(STATUS == STATUS_LEFT){ //left
 
             X_1 =  vertex_X_1 + OFFSET_LEFT;
             Y_1 = vertex_Y_1 + OFFSET_LEFT;
@@ -353,6 +327,7 @@ public class OpenGLRenderer implements Renderer {
     }
 
 
+    //set OpenGlData
     private void bindData() {
         uColorLocation = glGetUniformLocation(programId, "u_Color");
         int intColor = Color.parseColor("#ffffff");
@@ -368,6 +343,5 @@ public class OpenGLRenderer implements Renderer {
         glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0, vertexData);
         glEnableVertexAttribArray(aPositionLocation);
     }
-
 }
 

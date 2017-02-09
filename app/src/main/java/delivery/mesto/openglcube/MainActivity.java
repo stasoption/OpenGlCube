@@ -11,6 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import static delivery.mesto.openglcube.OpenGLRenderer.STATUS_LEFT;
+import static delivery.mesto.openglcube.OpenGLRenderer.STATUS_RIGHT;
+import static delivery.mesto.openglcube.OpenGLRenderer.STATUS_UP;
+
 public class MainActivity extends AppCompatActivity {
 
     private GLSurfaceView glSurfaceView;
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                mOpenGLRenderer.setStatus(1);
+                mOpenGLRenderer.setStatus(STATUS_UP);
                 mOpenGLRenderer.updateVertexes();
             }
 
@@ -69,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                mOpenGLRenderer.setStatus(2);
+                mOpenGLRenderer.setStatus(STATUS_RIGHT);
                 mOpenGLRenderer.updateVertexes();
             }
 
@@ -89,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                mOpenGLRenderer.setStatus(3);
+                mOpenGLRenderer.setStatus(STATUS_LEFT);
                 mOpenGLRenderer.updateVertexes();
             }
 
