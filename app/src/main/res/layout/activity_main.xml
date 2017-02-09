@@ -14,8 +14,7 @@
         android:orientation="horizontal"
         android:id="@+id/renderer"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:background="#7846c2">
+        android:layout_height="300dp">
     </LinearLayout>
 
 

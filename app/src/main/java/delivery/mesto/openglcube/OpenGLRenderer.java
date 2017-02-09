@@ -5,23 +5,19 @@ import android.graphics.Color;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.Matrix;
-import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import static android.opengl.GLES10.GL_LINE_LOOP;
 import static android.opengl.GLES10.glLineWidth;
-import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_FLOAT;
 import static android.opengl.GLES20.GL_FRAGMENT_SHADER;
 import static android.opengl.GLES20.GL_VERTEX_SHADER;
-import static android.opengl.GLES20.glClear;
 import static android.opengl.GLES20.glClearColor;
 import static android.opengl.GLES20.glDrawArrays;
 import static android.opengl.GLES20.glEnableVertexAttribArray;
@@ -30,7 +26,6 @@ import static android.opengl.GLES20.glGetUniformLocation;
 import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glVertexAttribPointer;
-import static android.opengl.GLES20.glViewport;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 
 public class OpenGLRenderer implements Renderer {
@@ -87,13 +82,9 @@ public class OpenGLRenderer implements Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 arg0, EGLConfig arg1) {
-        //background foe the canvas
-        int intColor = Color.parseColor("#7846c2");
-        GLES20.glClearColor(Color.red(intColor) / 255.0f,
-                Color.green(intColor) / 255.0f,
-                Color.blue(intColor) / 255.0f,
-                1f);
 
+        //transporent background
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         //set parameters for shaders
         int vertexShaderId = ShaderUtils.createShader(context, GL_VERTEX_SHADER, R.raw.vertex_shader);
@@ -101,20 +92,19 @@ public class OpenGLRenderer implements Renderer {
         programId = ShaderUtils.createProgram(vertexShaderId, fragmentShaderId);
         glUseProgram(programId);
 
+        //matrix for storing a camera position state
         createViewMatrix();
 
+        //init the cube parameters
         initVertexes();
         updateVertexes();
         updateVertexArray();
-
         bindData();
-
     }
 
     @Override
     public void onSurfaceChanged(GL10 arg0, int width, int height) {
         GLES20.glViewport(0, 0, width, height);
-
         createProjectionMatrix(width, height);
         bindMatrix();
     }
