@@ -44,11 +44,6 @@ public class MainActivity extends AppCompatActivity {
             glSurfaceView = new GLSurfaceView(this);
             glSurfaceView.setEGLContextClientVersion(2);
 
-            //transparent background
-            glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-            glSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-            glSurfaceView.setZOrderOnTop(true);
-
             glSurfaceView.setRenderer(mOpenGLRenderer);
 
             //container for the OpenGL canvas

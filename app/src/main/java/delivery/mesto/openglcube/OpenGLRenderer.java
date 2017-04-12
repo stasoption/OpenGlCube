@@ -14,6 +14,8 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import static android.opengl.GLES10.GL_LINE_LOOP;
+import static android.opengl.GLES10.glClear;
+import static android.opengl.GLES10.glEnable;
 import static android.opengl.GLES10.glLineWidth;
 import static android.opengl.GLES20.GL_FLOAT;
 import static android.opengl.GLES20.GL_FRAGMENT_SHADER;
@@ -40,13 +42,34 @@ public class OpenGLRenderer implements Renderer {
     public final static int STATUS_LEFT = 3;
 
     private int STATUS = 0;
-    private float OFFSET_UP = 0.0f;
-    private float OFFSET_RIGHT = 0.0f;
-    private float OFFSET_LEFT = 0.0f;
+    private static float OFFSET_UP = 0.0f;
+    private static float OFFSET_RIGHT = 0.0f;
+    private static float OFFSET_LEFT = 0.0f;
 
-    //for storing coordinates
-    private float X_1, X_2, X_3, X_4, X_5, X_6, X_7, X_8;
-    private float Y_1, Y_2, Y_3, Y_4, Y_5, Y_6, Y_7, Y_8;
+    //for storing coordinates (with first initializing)
+    private static float X_1 =  0.0f;
+    private static float Y_1 = 0.5f;
+
+    private static float X_2 =  0.5f;
+    private static float Y_2 = 0.2f;
+
+    private static float X_3 =  0.5f;
+    private static float Y_3 = -0.3f;
+
+    private static float X_4 =  0.0f;
+    private static float Y_4 = 0.0f;
+
+    private static float X_5 =  -0.5f;
+    private static float Y_5 = 0.2f;
+
+    private static float X_6 =  0.0f;
+    private static float Y_6 = -0.1f;
+
+    private static float X_7 = 0.0f;
+    private static float Y_7 = -0.6f;
+
+    private static float X_8 = -0.5f;
+    private static float Y_8 = -0.3f;
 
     //vertices when drawing
     private float vertex_X_1, vertex_X_2, vertex_X_3, vertex_X_4, vertex_X_5, vertex_X_6, vertex_X_7, vertex_X_8;
@@ -71,20 +94,20 @@ public class OpenGLRenderer implements Renderer {
 
     // how many offset for the cube when it changing
     public void setOffsetUp(float offset){
-        this.OFFSET_UP = offset;
+        OFFSET_UP = offset;
     }
     public void setOffsetRight(float offset){
-        this.OFFSET_RIGHT = offset;
+        OFFSET_RIGHT = offset;
     }
     public void setOffsetLeft(float offset){
-        this.OFFSET_LEFT = offset;
+        OFFSET_LEFT = offset;
     }
 
     @Override
     public void onSurfaceCreated(GL10 arg0, EGLConfig arg1) {
-
-        //transporent background
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glEnable(GL10.GL_DEPTH_TEST);
+        glClearColor(0.0f, 0.25f, 0.35f, 0.0f);
+        glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         //set parameters for shaders
         int vertexShaderId = ShaderUtils.createShader(context, GL_VERTEX_SHADER, R.raw.vertex_shader);
@@ -96,7 +119,6 @@ public class OpenGLRenderer implements Renderer {
         createViewMatrix();
 
         //init the cube parameters
-        initVertexes();
         updateVertexes();
         updateVertexArray();
         bindData();
@@ -176,36 +198,8 @@ public class OpenGLRenderer implements Renderer {
         glDrawArrays(GL_LINE_LOOP, 12, 4);
     }
 
-    //primary initialized the cube
-    public void initVertexes(){
-        X_1 =  0.0f;
-        Y_1 = 0.5f;
-
-        X_2 =  0.5f;
-        Y_2 = 0.2f;
-
-        X_3 =  0.5f;
-        Y_3 = -0.3f;
-
-        X_4 =  0.0f;
-        Y_4 = 0.0f;
-
-        X_5 =  -0.5f;
-        Y_5 = 0.2f;
-
-        X_6 =  0.0f;
-        Y_6 = -0.1f;
-
-        X_7 = 0.0f;
-        Y_7 = -0.6f;
-
-        X_8 = -0.5f;
-        Y_8 = -0.3f;
-    }
-
     //update the cube after transformation
     public void updateVertexes(){
-
         if(STATUS == STATUS_UP){
             vertex_X_1 =  X_1;
             vertex_Y_1 = Y_1 - OFFSET_UP;
@@ -405,4 +399,5 @@ public class OpenGLRenderer implements Renderer {
         uMatrixLocation = glGetUniformLocation(programId, "u_Matrix");
     }
 }
+
 
